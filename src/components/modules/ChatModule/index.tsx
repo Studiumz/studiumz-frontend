@@ -16,7 +16,71 @@ export default function ChatModule() {
   return (
     <>
       <div className="flex lg:flex-row flex-col">
-        <div className="lg:w-1/4 w-full px-5 py-10 p-5 lg:mt-20 lg:ml-20 mt-24">
+        <div className="lg:w-1/4 w-full px-5 p-5 lg:mt-20 lg:ml-20 mt-24">
+          <Card className="mb-5">
+            <div className="flex items-center justify-between">
+              <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                Invitations
+              </h5>
+            </div>
+            <div className="flow-root">
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-40">
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="shrink-0">
+                      {/* <No
+                        Display
+                        Name
+                        alt="Neil image"
+                        className="rounded-full"
+                        height="32"
+                        src="/images/people/profile-picture-1.jpg"
+                        width="32"
+                      /> */}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                        Neil Sims
+                      </p>
+                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                        email@windster.com
+                      </p>
+                    </div>
+                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                      $320
+                    </div>
+                  </div>
+                </li>
+
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="shrink-0">
+                      {/* <No
+                        Display
+                        Name
+                        alt="Bonnie image"
+                        className="rounded-full"
+                        height="32"
+                        src="/images/people/profile-picture-3.jpg"
+                        width="32"
+                      /> */}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                        Bonnie Green
+                      </p>
+                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                        email@windster.com
+                      </p>
+                    </div>
+                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                      $3467
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </Card>
           <Card>
             <div className="flex items-center justify-between">
               <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">

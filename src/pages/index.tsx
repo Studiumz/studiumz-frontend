@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative bg-gradient-to-r from-white via-white to-violet bg-opacity-50 flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full lg:p-24 md:p-20 lg:py-56 py-48">
+      <div className="relative flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full lg:p-24 md:p-20 lg:py-56 py-48">
         {/* left */}
         <div
           className="flex flex-col relative mb-10 leading-none

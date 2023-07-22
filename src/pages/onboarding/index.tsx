@@ -126,7 +126,7 @@ export default function Onboarding() {
                         </ul>
                       </>
                     );
-                  }
+                  },
                 )}
               </ul>
             </div>

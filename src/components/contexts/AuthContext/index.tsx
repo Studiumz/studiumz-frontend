@@ -14,15 +14,17 @@ export const useAuthContext = () => useContext(AuthContext);
 export function AuthContextProvider({ children }: any) {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     return getAuth(firebase_app).onIdTokenChanged(async (user) => {
       if (!user) {
         setUser(null);
-        nookies.set(undefined, "accessToken", "", { path: "/" });
+        nookies.set(undefined, "token", "", { path: "/" });
       } else {
         const token = await user.getIdToken();
+        console.log('token', token)
         const options = {
           headers: {
             "Content-Type": "application/json",
@@ -36,7 +38,11 @@ export function AuthContextProvider({ children }: any) {
             nookies.set(undefined, "userId", response.data.user_id, {
               path: "/",
             });
+            nookies.set(undefined, "accessToken", response.data.access_token, {
+              path: "/",
+            });
             setUserId(response.data.user_id);
+            setAccessToken(response.data.access_token)
             setLoading(false);
           })
           .catch((error) => {
@@ -44,7 +50,7 @@ export function AuthContextProvider({ children }: any) {
           });
 
         setUser(user);
-        nookies.set(undefined, "accessToken", token, { path: "/" });
+        nookies.set(undefined, "token", token, { path: "/" });
       }
       setLoading(false);
     });
@@ -63,7 +69,7 @@ export function AuthContextProvider({ children }: any) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, userId, loading, setLoading }}>
+    <AuthContext.Provider value={{ user, userId, accessToken, loading, setLoading }}>
       {children}
     </AuthContext.Provider>
   );

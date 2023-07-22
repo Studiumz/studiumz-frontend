@@ -34,18 +34,18 @@ export const LoginModule: React.FC = () => {
     <div
       className={`flex lg:flex-row flex-col min-h-screen rounded-lg bg-gradient-to-r from-white via-white to-violet bg-opacity-10 items-center justify-center p-24 text-black`}
     >
-      <div className="lg:w-1/2 w-full flex flex-col justify-center items-center gap-5">
-        <div className="flex flex-wrap">
+      <div className="lg:w-1/2 flex flex-col justify-center items-center gap-5">
+        <div className="flex items-center justify-center">
           <StudiumzLogo size={"w-20"} />
-          <h1 className="text-violet text-5xl font-extrabold">Studiumz</h1>
+          <h1 className="text-violet lg:text-5xl text-2xl font-extrabold">Studiumz</h1>
         </div>
-        <h3 className="text-[#808089] text-2xl ml-20">
+        <h3 className="text-[#808089] lg:text-2xl text-xl lg:ml-20 lg:text-left text-center">
           Empowering Senior High Networks: <br />
           <p className="font-bold">Study, Connect, Succeed.</p>
         </h3>
       </div>
       <div className="w-1/2 text-center flex flex-col justify-end items-center gap-5">
-        <h3 className="text-purple-800 text-xl">
+        <h3 className="text-purple-800 lg:text-xl text-lg whitespace-nowrap">
           Unlock Your Potential Together.
         </h3>
         <a>

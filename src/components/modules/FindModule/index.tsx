@@ -11,7 +11,7 @@ import { LoginGuardModal } from "../AuthModule/module-elements/LoginGuardModal";
 import { getAuth } from "@firebase/auth";
 import firebase_app from "@/components/config/firebase";
 import { CardModule } from "../CardModule";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { cfg } from "@/components/config";
 import nookies from "nookies";
 
@@ -30,7 +30,7 @@ export const FindModule: React.FC = () => {
     if (!loading && !user) {
       setIsLoginGuardModal(true);
     } else {
-      // getIncomingMatches()
+      getRecommendation();
     }
   }, [user, loading]);
 
@@ -52,6 +52,24 @@ export const FindModule: React.FC = () => {
     setTimeout(() => {
       setAcceptMatch(false);
     }, 3000);
+  };
+
+  const getRecommendation = () => {
+    const options: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${nookies.get().accessToken}`,
+        "Content-Type": "application/json",
+      },
+    };
+    axios
+      .get(`${cfg.API}/recommendation/`, options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        // Handle errors gracefully (e.g., display an error message to the user)
+        console.log("Error fetching incoming match data:", err);
+      });
   };
 
   return (

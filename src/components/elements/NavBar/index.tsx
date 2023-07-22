@@ -9,6 +9,7 @@ import { getAuth } from "@firebase/auth";
 import firebase_app from "@/components/config/firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import nookies, { destroyCookie } from "nookies";
 
 export const NavBar: React.FC = () => {
   const router = useRouter();
@@ -42,22 +43,22 @@ export const NavBar: React.FC = () => {
                 color={"light"}
                 // size={"small"}
               >
-                <Dropdown.Item>
-                  <Link
-                    href="/auth/logout"
-                    className=" text-red-500"
-                    onClick={async () => {
-                      await getAuth(firebase_app)
-                        .signOut()
-                        .then(() => {
-                          router.push("/");
-                          toast.success("Successfully Sign Out.");
-                        });
-                    }}
-                  >
-                    Sign out
-                  </Link>
-                </Dropdown.Item>
+                <Link
+                  href="/"
+                  className=" text-red-500"
+                  onClick={async () => {
+                    await getAuth(firebase_app)
+                      .signOut()
+                      .then(() => {
+                        destroyCookie(undefined, "accessToken");
+                        destroyCookie(undefined, "idToken");
+                        router.push("/");
+                        toast.success("Successfully Sign Out.");
+                      });
+                  }}
+                >
+                  <Dropdown.Item>Sign out</Dropdown.Item>
+                </Link>
               </Dropdown>
             </>
           ) : (

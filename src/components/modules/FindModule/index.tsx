@@ -5,16 +5,31 @@ import { AiFillHome } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import { RiUserAddFill } from "react-icons/ri";
 import { ImCross } from "react-icons/im";
+import InvitationModal from "./module-elements/InvitationModal";
+import { useAuthContext } from "@/components";
+import { LoginGuardModal } from "../AuthModule/module-elements/LoginGuardModal";
+import { getAuth } from "@firebase/auth";
+import firebase_app from "@/components/config/firebase";
 
 export const FindModule: React.FC = () => {
   const router = useRouter();
+  const { user, userId, loading } = useAuthContext();
   const [changeMatch, setChangeMatch] = useState<boolean>(false);
   const [acceptMatch, setAcceptMatch] = useState<boolean>(false);
+  const [isInvitationModalOpen, setIsInvitationModalOpen] =
+    useState<boolean>(false);
+  const [isInvitationModalSend, setIsInvitationModalSend] =
+    useState<boolean>(false);
+  const [isLoginGuardModal, setIsLoginGuardModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      setIsLoginGuardModal(true);
+    }
+  }, [user, loading]);
 
   function handleAcceptMatch() {
-    setTimeout(() => {
-      setAcceptMatch(true);
-    }, 1000);
+    setIsInvitationModalOpen(true);
   }
 
   function handleChangeMatch() {
@@ -24,12 +39,23 @@ export const FindModule: React.FC = () => {
     }, 500);
   }
 
+  const handleSend = (isSendValue: boolean) => {
+    setIsInvitationModalSend(isSendValue);
+    setIsInvitationModalOpen(false);
+    setAcceptMatch(true);
+    setTimeout(() => {
+      setAcceptMatch(false);
+    }, 3000);
+  };
+
   return (
     <>
       <div className="h-screen items-center justify-center w-full flex flex-col">
         {acceptMatch ? (
           <div className="pulse z-10 absolute w-64 h-64 fade-in">
-            <h2 className="font-semibold">Match</h2>
+            <h2 className="font-semibold text-headline-medium text-center items-center">
+              Match Invitation Has Sent!
+            </h2>
           </div>
         ) : (
           <></>
@@ -94,6 +120,16 @@ export const FindModule: React.FC = () => {
           </div>
         </div>
       </div>
+      <InvitationModal
+        showModal={isInvitationModalOpen}
+        onClose={() => setIsInvitationModalOpen(false)}
+        isSend={isInvitationModalSend}
+        onSend={handleSend}
+      />{" "}
+      <LoginGuardModal
+        showModal={isLoginGuardModal}
+        onClose={() => setIsLoginGuardModal(false)}
+      />
     </>
   );
 };

@@ -10,7 +10,8 @@ import firebase_app from "@/components/config/firebase";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import axios, { AxiosRequestConfig } from "axios";
+import { cfg } from "@/components/config";
 export const LoginModule: React.FC = () => {
   const auth = getAuth(firebase_app);
   const provider = new GoogleAuthProvider();
@@ -18,10 +19,10 @@ export const LoginModule: React.FC = () => {
 
   const handleLogIn = async () => {
     const result = await signInWithPopup(auth, provider)
-      .then((result) => {
-        toast.success("Successfully log in.");
+      .then(() => {
+        toast.success("Successfully Log In.");
         setTimeout(() => {
-          router.push("/onboarding");
+          router.push("/");
         }, 1000);
       })
       .catch((error) => {
@@ -49,7 +50,7 @@ export const LoginModule: React.FC = () => {
         </h3>
         <a>
           <button
-            className="flex justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80"
+            className="flex bg-white justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80"
             onClick={handleLogIn}
           >
             <svg

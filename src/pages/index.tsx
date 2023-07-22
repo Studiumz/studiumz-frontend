@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full p-24 py-48">
+      <div className="relative flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full lg:p-24 md:p-20 lg:py-56 py-48">
         {/* left */}
         <div
           className="flex flex-col relative mb-10 leading-none
@@ -87,10 +87,10 @@ export default function Home() {
             Embrace your struggles and find strength in solidarity at Studiumz!
             <br />
             <br />
-            Studiumz: An inclusive online platform for high school students,
-            fostering connections with peers who share similar struggles,
-            offering a safe space to exchange advice, discover resources, and
-            build lasting friendships while navigating academic life together.
+            An inclusive online platform for high school students, fostering
+            connections with peers who share similar struggles, offering a safe
+            space to exchange advice, discover resources, and build lasting
+            friendships while navigating academic life together.
           </p>
           <br />
           <br />

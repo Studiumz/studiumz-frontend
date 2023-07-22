@@ -6,12 +6,15 @@ import nookies from "nookies";
 import { AuthContextInterface, CustomUser } from "./interface";
 import { cfg } from "@/components/config";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const AuthContext = createContext({} as AuthContextInterface);
 
 export const useAuthContext = () => useContext(AuthContext);
 
 export function AuthContextProvider({ children }: any) {
+  const router = useRouter()
+
   const [user, setUser] = useState<UserInfo | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -72,17 +75,23 @@ export function AuthContextProvider({ children }: any) {
     });
   }, []);
 
-  useEffect(() => {
-    const handle = setInterval(
-      async () => {
-        const user = getAuth(firebase_app).currentUser;
-        if (user) await user.getIdToken(true);
-      },
-      10 * 60 * 1000,
-    );
+  // useEffect(() => {
+  //   const handle = setInterval(
+  //     async () => {
+  //       const user = getAuth(firebase_app).currentUser;
+  //       if (user) await user.getIdToken(true);
+  //     },
+  //     10 * 60 * 1000,
+  //   );
 
-    return () => clearInterval(handle);
-  }, []);
+  //   return () => clearInterval(handle);
+  // }, []);
+
+  useEffect(() => {
+    if (router.isReady && userInfo && userInfo.status === 0) {
+      router.push("/onboarding");
+    }
+  }, [router, userInfo]);
 
   return (
     <AuthContext.Provider

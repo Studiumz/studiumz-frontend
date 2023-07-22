@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "flowbite-react";
 
- /* eslint-disable */ 
+/* eslint-disable */
 const LETTER_INTERVAL_IN_MILLISECONDS = 65;
 const KEYWORD_INTERVAL_IN_MILLISECONDS = 1500;
 const KEYWORDS_LIST: string[] = [

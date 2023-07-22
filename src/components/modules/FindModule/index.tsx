@@ -11,12 +11,13 @@ export const FindModule: React.FC = () => {
   const router = useRouter();
   const [changeMatch, setChangeMatch] = useState<boolean>(false);
   const [acceptMatch, setAcceptMatch] = useState<boolean>(false);
-  const [isInvitationModalOpen, setIsInvitationModalOpen]  = useState<boolean>(false);
-  const [isInvitationModalSend, setIsInvitationModalSend] = useState<boolean>(false); 
+  const [isInvitationModalOpen, setIsInvitationModalOpen] =
+    useState<boolean>(false);
+  const [isInvitationModalSend, setIsInvitationModalSend] =
+    useState<boolean>(false);
 
   function handleAcceptMatch() {
-    setIsInvitationModalOpen(true)
-   
+    setIsInvitationModalOpen(true);
   }
 
   function handleChangeMatch() {
@@ -28,13 +29,11 @@ export const FindModule: React.FC = () => {
 
   const handleSend = (isSendValue: boolean) => {
     setIsInvitationModalSend(isSendValue);
-    setIsInvitationModalOpen(false); 
-      setAcceptMatch(true);
+    setIsInvitationModalOpen(false);
+    setAcceptMatch(true);
     setTimeout(() => {
-
-    setAcceptMatch(false)
-  }, 3000);
-
+      setAcceptMatch(false);
+    }, 3000);
   };
 
   return (
@@ -42,7 +41,9 @@ export const FindModule: React.FC = () => {
       <div className="h-screen items-center justify-center w-full flex flex-col">
         {acceptMatch ? (
           <div className="pulse z-10 absolute w-64 h-64 fade-in">
-            <h2 className="font-semibold text-headline-medium text-center items-center">Match Invitation Has Sent!</h2>
+            <h2 className="font-semibold text-headline-medium text-center items-center">
+              Match Invitation Has Sent!
+            </h2>
           </div>
         ) : (
           <></>
@@ -107,11 +108,12 @@ export const FindModule: React.FC = () => {
           </div>
         </div>
       </div>
-<InvitationModal
+      <InvitationModal
         showModal={isInvitationModalOpen}
         onClose={() => setIsInvitationModalOpen(false)}
         isSend={isInvitationModalSend}
         onSend={handleSend}
-      />    </>
+      />{" "}
+    </>
   );
 };

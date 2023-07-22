@@ -10,7 +10,8 @@ import firebase_app from "@/components/config/firebase";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import axios, { AxiosRequestConfig } from "axios";
+import { cfg } from "@/components/config";
 export const LoginModule: React.FC = () => {
   const auth = getAuth(firebase_app);
   const provider = new GoogleAuthProvider();
@@ -18,11 +19,30 @@ export const LoginModule: React.FC = () => {
 
   const handleLogIn = async () => {
     const result = await signInWithPopup(auth, provider)
-      .then((result) => {
-        toast.success("Successfully log in.");
-        setTimeout(() => {
-          router.push("/");
-        }, 1000);
+      .then(async (result) => {
+        const user = result.user;
+        if (user) {
+          const idToken = await user.getIdToken();
+
+          const options = {
+            headers: {
+              "Content-Type": "application/json",
+              "X-Google-Id-Token": idToken,
+            },
+          };
+
+          axios
+            .post(`${cfg.API}/auth/sign-in/google`, {}, options)
+            .then((response) => {
+              toast.success("Successfully log in.");
+              setTimeout(() => {
+                router.push("/");
+              }, 1000);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
       })
       .catch((error) => {
         console.log(error);

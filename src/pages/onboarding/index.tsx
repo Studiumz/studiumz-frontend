@@ -2,8 +2,9 @@ import CustomModal from "@/components/elements/modal";
 import { StudiumzLogo } from "@/components/icons/StudiumzLogo";
 import { CardModule } from "@/components/modules/CardModule";
 import { Label, TextInput, Button } from "flowbite-react";
-import { GenderContents, subjectContents } from "./constant";
 import { Key } from "react";
+import GenderContents from "../../components/utils/GenderConstant";
+import subjectContents from "../../components/utils/subjectConstant";
 
 export default function Onboarding() {
   return (

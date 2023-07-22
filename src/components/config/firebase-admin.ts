@@ -4,7 +4,7 @@ import * as admin from "firebase-admin";
 import { credential } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
 
-const serviceAccount = require("ServiceAccountFile.json");
+const serviceAccount = require("./ServiceAccountFile.json");
 
 if (!admin.apps.length) {
   initializeApp({

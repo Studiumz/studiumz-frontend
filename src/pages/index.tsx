@@ -13,13 +13,15 @@ export default function Home() {
             <StudiumzLogo size={"w-20"} />
             <h1 className="text-violet text-5xl font-extrabold">Studiumz</h1>
           </div>
-          <h3 className="text-[#808089] text-2xl">
+          <h3 className="text-[#808089] text-2xl ml-4">
             Empowering Senior High Networks: <br />
-            Study, Connect, Succeed.
+            <p className="font-bold">Study, Connect, Succeed.</p>
           </h3>
         </div>
-        <div className="lg:w-1/2 text-violet w-full text-center flex flex-col justify-end items-center gap-5">
-          <h3>Unlock Your Potential Together.</h3>
+        <div className="lg:w-1/2 w-full text-center flex flex-col justify-end items-center gap-5">
+          <h3 className="text-violet text-xl">
+            Unlock Your Potential Together.
+          </h3>
           <button className="flex justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80">
             <svg
               width="20"

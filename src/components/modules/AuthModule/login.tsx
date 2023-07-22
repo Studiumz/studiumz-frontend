@@ -21,7 +21,7 @@ export const LoginModule: React.FC = () => {
       .then((result) => {
         toast.success("Successfully log in.");
         setTimeout(() => {
-          router.push("/");
+          router.push("/onboarding");
         }, 1000);
       })
       .catch((error) => {

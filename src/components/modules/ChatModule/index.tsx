@@ -16,15 +16,15 @@ export default function ChatModule() {
   return (
     <>
       <div className="flex lg:flex-row flex-col">
-        <div className="lg:w-1/4 w-full px-5 py-10 p-5 lg:mt-20 lg:ml-20 mt-10">
-          <Card className="p-5">
+        <div className="lg:w-1/4 w-full px-5 py-10 p-5 lg:mt-20 lg:ml-20 mt-24">
+          <Card>
             <div className="flex items-center justify-between">
               <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
                 Connections
               </h5>
             </div>
             <div className="flow-root">
-              <ul className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-56">
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-72">
                 <li className="py-3 sm:py-4">
                   <div className="flex items-center space-x-4">
                     <div className="shrink-0">

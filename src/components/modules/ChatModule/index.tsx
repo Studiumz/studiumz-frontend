@@ -3,16 +3,80 @@ import { Card } from "flowbite-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { LoginGuardModal } from "../AuthModule/module-elements/LoginGuardModal";
+import axios from "axios";
+import { DetailChat, FriendsInfo, ListOfChats } from "./interface";
 
 export default function ChatModule() {
   const { user, userId, loading } = useAuthContext();
   const [isLoginGuardModal, setIsLoginGuardModal] = useState<boolean>(false);
+  const [chats, setChats] = useState<ListOfChats[]>();
+  const [chatId, setChatId] = useState<string | undefined>();
+  const [friendChats, setFriendChats] = useState<FriendsInfo[]>();
+  const [sendMessageTo, setSendMessageTo] = useState("");
+  const [detailChats, setDetailChats] = useState<DetailChat>();
+  const [friendsName, setFriendsName] = useState("");
+  const [friendsEmail, setFriendsEmail] = useState("");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Rldi5hcGkuc3R1ZGl1bXoudmVpdmVscC5jb20iLCJzdWIiOiIwMUg1WUhTSFFFWThKN01aWDdBOVA1VjBWUiIsImF1ZCI6WyJodHRwczovL2Rldi5hcGkuc3R1ZGl1bXoudmVpdmVscC5jb20iXSwiZXhwIjoxNjkwNjU3NTMyLCJpYXQiOjE2OTAwNTI3MzIsImp0aSI6IjAxSDVaRlc5QjRNTjE2UTgxVjdNNjZKNThCIiwic2NvcGVzIjoiUk9MRV9VU0VSIn0.CZq5ucIPH3DqnAuhAjrAcUT5eAwNEKrGLI8J8c6SGQQ`,
+    },
+  };
+
+  const getDetailUserChats = async (id: string) => {};
+
+  const [data, setData] = useState("");
+
+  const handleInputChange = (e: any) => {
+    setData(e.target.value);
+  };
+
+  const handleCreateMessage = async () => {
+    await axios
+      .post(
+        `https://dev.api.studiumz.veivelp.com/chat/${sendMessageTo}/create`,
+        {
+          text: data,
+        },
+        config
+      )
+      .then((response) => {
+        console.log("createMessage");
+        setSendMessageTo(sendMessageTo);
+        console.log(response.data);
+      });
+  };
 
   useEffect(() => {
+    axios
+      .get("https://dev.api.studiumz.veivelp.com/chat", config)
+      .then((response) => {
+        setFriendChats(response.data);
+
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     if (!loading && !user) {
       setIsLoginGuardModal(true);
     }
   }, [user, loading]);
+
+  useEffect(() => {
+    axios
+      .get(`https://dev.api.studiumz.veivelp.com/chat/${sendMessageTo}`, config)
+      .then((response) => {
+        console.log("detailllll");
+        setDetailChats(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [sendMessageTo]);
+
   return (
     <>
       <div className="flex lg:flex-row flex-col">
@@ -39,42 +103,16 @@ export default function ChatModule() {
                       /> */}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Neil Sims
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $320
-                    </div>
-                  </div>
-                </li>
-
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Bonnie image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-3.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Bonnie Green
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $3467
+                      {friendChats?.map((friend) => {
+                        return (
+                          <>
+                            <div key={friend.id}>
+                              <p>{friend.recipient_name}</p>
+                              <p>{friend.recipient_email}</p>
+                            </div>
+                          </>
+                        );
+                      })}
                     </div>
                   </div>
                 </li>
@@ -91,183 +129,26 @@ export default function ChatModule() {
               <ul className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-72">
                 <li className="py-3 sm:py-4">
                   <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Neil image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-1.jpg"
-                        width="32"
-                      /> */}
-                    </div>
+                    <div className="shrink-0"></div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Neil Sims
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $320
-                    </div>
-                  </div>
-                </li>
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Bonnie image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-3.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Bonnie Green
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $3467
-                    </div>
-                  </div>
-                </li>
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Michael image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-2.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Michael Gough
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $67
-                    </div>
-                  </div>
-                </li>
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Lana image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-4.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Lana Byrd
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $367
-                    </div>
-                  </div>
-                </li>
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Lana image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-4.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Lana Byrd
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $367
-                    </div>
-                  </div>
-                </li>
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Lana image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-4.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Lana Byrd
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $367
-                    </div>
-                  </div>
-                </li>
-                <li className="pb-0 pt-3 sm:pt-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="shrink-0">
-                      {/* <No
-                        Display
-                        Name
-                        alt="Thomas image"
-                        className="rounded-full"
-                        height="32"
-                        src="/images/people/profile-picture-5.jpg"
-                        width="32"
-                      /> */}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                        Thomes Lean
-                      </p>
-                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                        email@windster.com
-                      </p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $2367
+                      {friendChats?.map((friend) => {
+                        return (
+                          <>
+                            <div key={friend.id}>
+                              <button
+                                onClick={() => {
+                                  setSendMessageTo(friend.id);
+                                  setFriendsName(friend.recipient_name);
+                                  setFriendsEmail(friend.recipient_email);
+                                }}
+                              >
+                                {friend.recipient_name}
+                              </button>
+                              <p>{friend.recipient_email}</p>
+                            </div>
+                          </>
+                        );
+                      })}
                     </div>
                   </div>
                 </li>
@@ -283,11 +164,9 @@ export default function ChatModule() {
               <div className="relative flex items-center space-x-4">
                 <div className="flex flex-col leading-tight">
                   <div className="text-2xl mt-1 flex items-center">
-                    <span className="text-gray-700 mr-3">Anderson Vanhron</span>
+                    <span className="text-gray-700 mr-3">{friendsName}</span>
                   </div>
-                  <span className="text-lg text-gray-600">
-                    Junior Developer
-                  </span>
+                  <span className="text-lg text-gray-600">{friendsEmail}</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -350,165 +229,46 @@ export default function ChatModule() {
                 </button>
               </div>
             </div>
+
             <div
               id="messages"
               className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
             >
-              <div className="chat-message">
-                <div className="flex items-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                        Can be verified on any platform using docker
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-1"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end justify-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-violet text-white ">
-                        Your error message says permission denied, npm global
-                        installs must be given root privileges.
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-2"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                        Command was run with root privileges. sure about that.
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                        update the description so more obviously now
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                        FYI https://askubuntu.com/a/700266/510172
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                        Check the line above (it ends with a # so, running it as
-                        root )<pre># npm install -g @vue/devtools</pre>
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-1"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end justify-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-violet text-black bg-opacity-80">
-                        Any updates on this issue? I&aposm getting the same
-                        error when trying to install devtools. Thanks
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-2"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                        Thanks for your message David. I thought alone with this
-                        issue. Please, ? the issue to support it :)
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-1"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end justify-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-violet text-white ">
-                        Are you using sudo?
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-violet text-white ">
-                        Run this command sudo chown -R `whoami` /Users/
-                        .npm-global/ then install the package globally without
-                        using sudo
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-2"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                        It seems like you are from Mac OS world. There is no
-                        /Users/ folder on linux ?
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                        I have no issue with any other packages installed with
-                        root permission globally.
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-1"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end justify-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-violet text-white ">
-                        yes, I have a mac. I never had issues with root
-                        permission as well, but this helped me to solve the
-                        problem
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-2"> */}
-                </div>
-              </div>
-              <div className="chat-message">
-                <div className="flex items-end">
-                  <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                        I get the same error on Arch Linux (also with sudo)
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block bg-gray-300 text-gray-600">
-                        I also have this issue, Here is what I was doing until
-                        now: #1076
-                      </span>
-                    </div>
-                    <div>
-                      <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
-                        even i am facing
-                      </span>
-                    </div>
-                  </div>
-                  {/* <Image width={200} height={200} src="https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144" alt="My profile" className="w-6 h-6 rounded-full order-1"> */}
-                </div>
-              </div>
+              {detailChats &&
+                detailChats.messages &&
+                [...detailChats?.messages].reverse().map((message) => {
+                  return (
+                    <>
+                      {message.from_user_id === userId ? (
+                        <div className="chat-message">
+                          <div className="flex items-end justify-end">
+                            <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+                              <div>
+                                <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-violet text-white ">
+                                  {message.text}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="chat-message">
+                          <div className="flex items-end">
+                            <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
+                              <div>
+                                <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
+                                  {message.text}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
             </div>
+
             <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
               <div className="relative flex">
                 <span className="absolute inset-y-0 flex items-center">
@@ -533,6 +293,8 @@ export default function ChatModule() {
                   </button>
                 </span>
                 <input
+                  value={data}
+                  onChange={handleInputChange}
                   type="text"
                   placeholder="Write your message!"
                   className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
@@ -602,6 +364,7 @@ export default function ChatModule() {
                     </svg>
                   </button>
                   <button
+                    onClick={handleCreateMessage}
                     type="button"
                     className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-purple-800 hover:bg-purple-400 focus:outline-none"
                   >

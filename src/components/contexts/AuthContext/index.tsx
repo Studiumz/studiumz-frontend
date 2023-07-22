@@ -3,7 +3,7 @@ import { User as FirebaseUser, User, UserInfo } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import firebase_app from "@/components/config/firebase";
 import nookies from "nookies";
-import { AuthContextInterface } from "./interface";
+import { AuthContextInterface, CustomUser } from "./interface";
 import { cfg } from "@/components/config";
 import axios from "axios";
 
@@ -16,6 +16,21 @@ export function AuthContextProvider({ children }: any) {
   const [userId, setUserId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState<CustomUser>();
+
+  function fetchUserInfo(at: string) {
+    axios.get(`${cfg.API}/auth/userinfo`, {
+      headers: {
+        Authorization: `Bearer ${at}`
+      }
+    })
+    .then(res => {
+      setUserInfo(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   useEffect(() => {
     return getAuth(firebase_app).onIdTokenChanged(async (user) => {
@@ -44,6 +59,7 @@ export function AuthContextProvider({ children }: any) {
             setUserId(response.data.user_id);
             setAccessToken(response.data.access_token);
             setLoading(false);
+            fetchUserInfo(response.data.access_token);
           })
           .catch((error) => {
             console.error(error);
@@ -70,7 +86,7 @@ export function AuthContextProvider({ children }: any) {
 
   return (
     <AuthContext.Provider
-      value={{ user, userId, accessToken, loading, setLoading }}
+      value={{ user, userId, accessToken, loading, setLoading, userInfo, setUserInfo }}
     >
       {children}
     </AuthContext.Provider>

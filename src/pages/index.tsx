@@ -5,7 +5,8 @@ export default function Home() {
   return (
     <>
       <main
-        className={`flex lg:flex-row flex-col z-0 min-h-screen bg-gradient-to-r  items-center justify-center p-24`}
+        className="flex lg:flex-row flex-col min-h-screen rounded-lg bg-gradient-to-r from-white via-white to-violet bg-opacity-10 items-center justify-center p-24 text-black"
+        // className={`flex lg:flex-row flex-col z-0 min-h-screen bg-gradient-to-r  items-center justify-center p-24`}
       >
         <div className="lg:w-1/2 w-full flex flex-col justify-start gap-5">
           <div className="flex flex-wrap">
@@ -18,7 +19,7 @@ export default function Home() {
           </h3>
         </div>
         <div className="lg:w-1/2 w-full text-center flex flex-col justify-end items-center gap-5">
-          <h3 className="text-violet text-xl">
+          <h3 className="text-purple-800 text-xl">
             Unlock Your Potential Together.
           </h3>
           <Link legacyBehavior href={"/onboarding"}>

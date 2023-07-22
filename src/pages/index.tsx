@@ -1,49 +1,118 @@
+import { StudiumzLogo } from "@/components/icons/StudiumzLogo";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaGoogle } from "react-icons/fa";
+import { Button } from "flowbite-react";
+
+ /* eslint-disable */ 
+const LETTER_INTERVAL_IN_MILLISECONDS = 65;
+const KEYWORD_INTERVAL_IN_MILLISECONDS = 1500;
+const KEYWORDS_LIST: string[] = [
+  "connect with peers",
+  "website",
+  "find peers with similar struggles",
+  "online community",
+  "Empowerment",
+];
 
 export default function Home() {
+  const [keywordIndex, setKeywordIndex] = useState<number>(-1);
+  const [currentKeyword, setCurrentKeyword] = useState<string>("pharmacy");
+
+  // functional, recursive logic for keyword animation
+
+  function switchKeyword() {
+    setKeywordIndex((prev) => (prev + 1) % KEYWORDS_LIST.length);
+  }
+
+  function writeKeyword(keyword: string) {
+    setTimeout(() => {
+      setCurrentKeyword((prev) => prev.concat(keyword.slice(0, 1)));
+      if (keyword.slice(1)) {
+        writeKeyword(keyword.slice(1));
+      } else {
+        switchKeyword();
+      }
+    }, LETTER_INTERVAL_IN_MILLISECONDS);
+  }
+
+  function sliceKeyword(len: number) {
+    setTimeout(() => {
+      setCurrentKeyword((prev) => prev.slice(0, prev.length - 1));
+      if (len > 1) {
+        sliceKeyword(len - 1);
+      }
+    }, LETTER_INTERVAL_IN_MILLISECONDS);
+  }
+
+  useEffect(() => {
+    if (keywordIndex === -1) {
+      setKeywordIndex(0);
+      return;
+    }
+
+    const len = currentKeyword.length;
+    if (len >= 1) {
+      setTimeout(() => {
+        sliceKeyword(len);
+      }, KEYWORD_INTERVAL_IN_MILLISECONDS);
+    } else {
+      writeKeyword(KEYWORDS_LIST[keywordIndex]);
+    }
+  }, [keywordIndex]);
+
+  useEffect(() => {
+    if (!(currentKeyword.length >= 1)) {
+      switchKeyword();
+    }
+  }, [currentKeyword]);
+
   return (
     <>
-      <main
-        className={`flex lg:flex-row flex-col z-0 min-h-screen bg-gradient-to-r from-violet to-white opacity-50 items-center justify-center p-24`}
-      >
-        <div className="lg:w-1/2 w-full flex flex-col justify-start gap-5">
-          <h1 className="text-violet text-5xl font-extrabold">Studiumz</h1>
-          <h3 className="text-[#808089]">
-            Empowering Senior High Networks: Study, Connect, Succeed.
-          </h3>
+      <div className="relative flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full lg:p-24 md:p-20 lg:py-56 py-48">
+        {/* left */}
+        <div
+          className="flex flex-col relative mb-10 leading-none
+        text-center md:text-left 2xl:pl-[15vw]
+        md:w-[50%] md:max-w-[55%] w-[100%] h-[80vw] md:h-fit mx-auto md:mx-0 md:mr-auto md:px-0 px-[10vw] sm:px-[8vw]"
+        >
+          <h1 className="text-black lg:text-display-medium text-display-small font-bold mr-8 md:my-0 my-auto">
+            Studiumz is more than just a{" "}
+            <p className="inline text-violet font-black underlinable w-fit">
+              {currentKeyword}
+            </p>
+            <p className="inline">.</p>
+          </h1>
+          <br />
+          <p className=" leading-normal">
+            Embrace your struggles and find strength in solidarity at Studiumz!
+            <br />
+            <br />
+            An inclusive online platform for high school students, fostering
+            connections with peers who share similar struggles, offering a safe
+            space to exchange advice, discover resources, and build lasting
+            friendships while navigating academic life together.
+          </p>
+          <br />
+          <br />
+          <Button
+            className=" bg-blue-dark w-[50%] hover:bg-blue-darkest md:mr-auto md:mx-0 mx-auto"
+            href="#about"
+          >
+            Yuk eksplor!
+          </Button>
         </div>
-        <div className="lg:w-1/2 text-violet w-full text-center flex flex-col justify-center items-center gap-5">
-          <h3>Unlock Your Potential Together.</h3>
-          <button className="flex justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M19.575 10.225C19.575 9.56665 19.5167 8.94165 19.4167 8.33331H10V12.0916H15.3917C15.15 13.325 14.4417 14.3666 13.3917 15.075V17.575H16.6083C18.4917 15.8333 19.575 13.2666 19.575 10.225Z"
-                fill="#4285F4"
-              />
-              <path
-                d="M9.99995 20C12.7 20 14.9583 19.1 16.6083 17.575L13.3916 15.075C12.4916 15.675 11.35 16.0417 9.99995 16.0417C7.39162 16.0417 5.18329 14.2833 4.39162 11.9083H1.07495V14.4833C2.71662 17.75 6.09162 20 9.99995 20Z"
-                fill="#34A853"
-              />
-              <path
-                d="M4.39167 11.9083C4.18333 11.3083 4.075 10.6667 4.075 9.99999C4.075 9.33333 4.19167 8.69166 4.39167 8.09166V5.51666H1.075C0.391666 6.86666 0 8.38333 0 9.99999C0 11.6167 0.391666 13.1333 1.075 14.4833L4.39167 11.9083Z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M9.99995 3.95833C11.475 3.95833 12.7916 4.46667 13.8333 5.45834L16.6833 2.60833C14.9583 0.991668 12.7 0 9.99995 0C6.09162 0 2.71662 2.25 1.07495 5.51667L4.39162 8.09167C5.18329 5.71667 7.39162 3.95833 9.99995 3.95833Z"
-                fill="#EA4335"
-              />
-            </svg>
-            Sign in with Google
-          </button>
-        </div>
-      </main>
+        <Image
+          height={220}
+          width={320}
+          className="
+            absolute right-0 top-0 lg:-mr-0lg:mt-0 md:-mt-20 object-cover rounded-3xl
+            ml-auto md:w-[40vw] md:h-[40vw] md:z-10 w-0 h-0 z-10
+            "
+          src="/assets/images/study-peer.png"
+          alt=""
+        />
+      </div>
     </>
   );
 }

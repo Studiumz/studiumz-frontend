@@ -1,1 +1,2 @@
-export * from "./";
+export * from "./NavBar";
+export * from "./modal";

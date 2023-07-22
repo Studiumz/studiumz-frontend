@@ -12,18 +12,24 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios, { AxiosRequestConfig } from "axios";
 import { cfg } from "@/components/config";
+import { useAuthContext } from "@/components";
 export const LoginModule: React.FC = () => {
   const auth = getAuth(firebase_app);
   const provider = new GoogleAuthProvider();
   const router = useRouter();
+  const { userInfo } = useAuthContext();
 
   const handleLogIn = async () => {
     const result = await signInWithPopup(auth, provider)
       .then(() => {
         toast.success("Successfully Log In.");
-        setTimeout(() => {
-          router.push("/");
-        }, 1000);
+        if (userInfo && userInfo.status === 0) {
+          router.push("/onboarding")
+        } else {
+          setTimeout(() => {
+            router.push("/");
+          }, 1000);
+        }
       })
       .catch((error) => {
         console.log(error);

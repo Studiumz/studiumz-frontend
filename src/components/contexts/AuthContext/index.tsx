@@ -3,19 +3,37 @@ import { User as FirebaseUser, User, UserInfo } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import firebase_app from "@/components/config/firebase";
 import nookies from "nookies";
-import { AuthContextInterface } from "./interface";
+import { AuthContextInterface, CustomUser } from "./interface";
 import { cfg } from "@/components/config";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const AuthContext = createContext({} as AuthContextInterface);
 
 export const useAuthContext = () => useContext(AuthContext);
 
 export function AuthContextProvider({ children }: any) {
+  const router = useRouter()
+
   const [user, setUser] = useState<UserInfo | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState<CustomUser>();
+
+  function fetchUserInfo(at: string) {
+    axios.get(`${cfg.API}/auth/userinfo`, {
+      headers: {
+        Authorization: `Bearer ${at}`
+      }
+    })
+    .then(res => {
+      setUserInfo(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   useEffect(() => {
     return getAuth(firebase_app).onIdTokenChanged(async (user) => {
@@ -44,6 +62,7 @@ export function AuthContextProvider({ children }: any) {
             setUserId(response.data.user_id);
             setAccessToken(response.data.access_token);
             setLoading(false);
+            fetchUserInfo(response.data.access_token);
           })
           .catch((error) => {
             console.error(error);
@@ -56,21 +75,27 @@ export function AuthContextProvider({ children }: any) {
     });
   }, []);
 
-  useEffect(() => {
-    const handle = setInterval(
-      async () => {
-        const user = getAuth(firebase_app).currentUser;
-        if (user) await user.getIdToken(true);
-      },
-      10 * 60 * 1000,
-    );
+  // useEffect(() => {
+  //   const handle = setInterval(
+  //     async () => {
+  //       const user = getAuth(firebase_app).currentUser;
+  //       if (user) await user.getIdToken(true);
+  //     },
+  //     10 * 60 * 1000,
+  //   );
 
-    return () => clearInterval(handle);
-  }, []);
+  //   return () => clearInterval(handle);
+  // }, []);
+
+  useEffect(() => {
+    if (router.isReady && userInfo && userInfo.status === 0) {
+      router.push("/onboarding");
+    }
+  }, [router, userInfo]);
 
   return (
     <AuthContext.Provider
-      value={{ user, userId, accessToken, loading, setLoading }}
+      value={{ user, userId, accessToken, loading, setLoading, userInfo, setUserInfo }}
     >
       {children}
     </AuthContext.Provider>

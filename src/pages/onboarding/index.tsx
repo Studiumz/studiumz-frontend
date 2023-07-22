@@ -7,7 +7,7 @@ export default function Onboarding() {
     <>
       <CustomModal />
 
-      <form className="flex flex-col p-5 justify-center items-center">
+      <form className="flex flex-col p-5 justify-center items-center z-0">
         <StudiumzLogo size={"w-20"} className="my-10" />
 
         <div className="flex lg:flex-row flex-col gap-16">
@@ -188,7 +188,6 @@ export default function Onboarding() {
           Submit
         </Button>
       </form>
-      {/* <Modal /> */}
     </>
   );
 }

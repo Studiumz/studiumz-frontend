@@ -8,12 +8,12 @@ export default function Home() {
         className="flex lg:flex-row flex-col min-h-screen rounded-lg bg-gradient-to-r from-white via-white to-violet bg-opacity-10 items-center justify-center p-24 text-black"
         // className={`flex lg:flex-row flex-col z-0 min-h-screen bg-gradient-to-r  items-center justify-center p-24`}
       >
-        <div className="lg:w-1/2 w-full flex flex-col justify-start gap-5">
+        <div className="lg:w-1/2 w-full flex flex-col justify-center items-center gap-5">
           <div className="flex flex-wrap">
             <StudiumzLogo size={"w-20"} />
             <h1 className="text-violet text-5xl font-extrabold">Studiumz</h1>
           </div>
-          <h3 className="text-[#808089] text-2xl ml-4">
+          <h3 className="text-[#808089] text-2xl ml-20">
             Empowering Senior High Networks: <br />
             <p className="font-bold">Study, Connect, Succeed.</p>
           </h3>

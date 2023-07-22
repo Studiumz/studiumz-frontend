@@ -13,11 +13,11 @@ import firebase_app from "@/components/config/firebase";
 import { CardModule } from "../CardModule";
 import axios from "axios";
 import { cfg } from "@/components/config";
-import nookies from 'nookies';
+import nookies from "nookies";
 
 export const FindModule: React.FC = () => {
   const router = useRouter();
-  const { user, userId, loading, accessToken} = useAuthContext();
+  const { user, userId, loading, accessToken } = useAuthContext();
   const [changeMatch, setChangeMatch] = useState<boolean>(false);
   const [acceptMatch, setAcceptMatch] = useState<boolean>(false);
   const [isInvitationModalOpen, setIsInvitationModalOpen] =
@@ -30,7 +30,7 @@ export const FindModule: React.FC = () => {
     if (!loading && !user) {
       setIsLoginGuardModal(true);
     } else {
-      getIncomingMatches()
+      // getIncomingMatches()
     }
   }, [user, loading]);
 
@@ -53,17 +53,6 @@ export const FindModule: React.FC = () => {
       setAcceptMatch(false);
     }, 3000);
   };
-
-  const getIncomingMatches = () => {
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${nookies.get()['accessToken']}`,
-      },
-    };
-    axios.get(`${cfg.API}/match/incoming`, options).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)})
-
-    }
 
   return (
     <>
@@ -115,11 +104,21 @@ export const FindModule: React.FC = () => {
               <div>
                 <h1 className="font-semibold mt-2">Interest In</h1>
                 <div className="w-full grid grid-cols-3 gap-2 mt-2">
-                <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">Physics</div>
-                <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">Math</div>
-                <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">Chemistry</div>
-                <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">Biology</div>
-                <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">Statistic</div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Physics
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Math
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Chemistry
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Biology
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Statistic
+                  </div>
                 </div>
               </div>
               <div></div>

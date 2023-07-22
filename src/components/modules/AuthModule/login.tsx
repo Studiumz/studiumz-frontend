@@ -37,7 +37,9 @@ export const LoginModule: React.FC = () => {
       <div className="lg:w-1/2 flex flex-col justify-center items-center gap-5">
         <div className="flex items-center justify-center">
           <StudiumzLogo size={"w-20"} />
-          <h1 className="text-violet lg:text-5xl text-2xl font-extrabold">Studiumz</h1>
+          <h1 className="text-violet lg:text-5xl text-2xl font-extrabold">
+            Studiumz
+          </h1>
         </div>
         <h3 className="text-[#808089] lg:text-2xl text-xl lg:ml-20 lg:text-left text-center">
           Empowering Senior High Networks: <br />

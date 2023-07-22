@@ -30,20 +30,20 @@ export const NavBar: React.FC = () => {
         <div className="flex md:order-2 sm:space-x-3">
           {user ? (
             <>
-            <Dropdown
-            inline
-            label={
-              <Avatar
-                alt="User settings"
-                img={user.photoURL ? user.photoURL : ""}
-                rounded
-              />
-            }
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">{user.displayName}</span>
-            </Dropdown.Header>
-            <Navbar.Link
+              <Dropdown
+                inline
+                label={
+                  <Avatar
+                    alt="User settings"
+                    img={user.photoURL ? user.photoURL : ""}
+                    rounded
+                  />
+                }
+              >
+                <Dropdown.Header>
+                  <span className="block text-sm">{user.displayName}</span>
+                </Dropdown.Header>
+                <Navbar.Link
                   href="/"
                   onClick={async () => {
                     await getAuth(firebase_app)
@@ -57,8 +57,8 @@ export const NavBar: React.FC = () => {
                   }}
                 >
                   <Dropdown.Item>Sign out</Dropdown.Item>
-                </Navbar.Link>            
-          </Dropdown>
+                </Navbar.Link>
+              </Dropdown>
             </>
           ) : (
             <Button

@@ -24,7 +24,7 @@ export function AuthContextProvider({ children }: any) {
         nookies.set(undefined, "token", "", { path: "/" });
       } else {
         const token = await user.getIdToken();
-        console.log('token', token)
+        console.log("token", token);
         const options = {
           headers: {
             "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export function AuthContextProvider({ children }: any) {
               path: "/",
             });
             setUserId(response.data.user_id);
-            setAccessToken(response.data.access_token)
+            setAccessToken(response.data.access_token);
             setLoading(false);
           })
           .catch((error) => {
@@ -69,7 +69,9 @@ export function AuthContextProvider({ children }: any) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, userId, accessToken, loading, setLoading }}>
+    <AuthContext.Provider
+      value={{ user, userId, accessToken, loading, setLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

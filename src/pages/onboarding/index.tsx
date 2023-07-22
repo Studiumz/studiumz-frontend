@@ -14,7 +14,7 @@ export default function Onboarding() {
         {/* <StudiumzLogo size={"w-20"} className="my-10" /> */}
 
         <div className="flex lg:flex-row flex-col gap-16">
-          <div className="w-1/2">
+          <div className="lg:w-1/2 w-full">
             <div className="mb-6">
               <div className="mb-2 block">
                 <Label htmlFor="email1" value="Your email" />
@@ -89,7 +89,7 @@ export default function Onboarding() {
             </div>
           </div>
 
-          <div className="w-1/2">
+          <div className="lg:w-1/2 w-full">
             <div className="mb-2 block">
               <Label htmlFor="stories" value="Share your struggle stories" />
             </div>
@@ -102,7 +102,7 @@ export default function Onboarding() {
               >
                 Choose your interests
               </label>
-              <ul className="flex gap-3">
+              <ul className="flex flex-wrap gap-3">
                 {subjectContents.map(
                   (content: {
                     id: string;
@@ -126,7 +126,7 @@ export default function Onboarding() {
                         </ul>
                       </>
                     );
-                  },
+                  }
                 )}
               </ul>
             </div>

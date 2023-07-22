@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full lg:p-24 md:p-20 lg:py-56 py-48">
+      <div className="relative bg-gradient-to-r from-white via-white to-violet bg-opacity-50 flex flex-col md:flex-row justify-center items-center mb-10 min-h-[40vw] w-full lg:p-24 md:p-20 lg:py-56 py-48">
         {/* left */}
         <div
           className="flex flex-col relative mb-10 leading-none
@@ -101,26 +101,16 @@ export default function Home() {
             Yuk eksplor!
           </Button>
         </div>
-
-        {/* <Image
-          width={200}
-          height={150}
-          alt="call to action"
-          src="/assets/images/action-bubble.png"
-          className="absolute right-[15vw] bottom-[10vw] z-20 md:w-fit md:h-fit w-0 h-0"
-        /> */}
-
-        {/* <div className="bg-red-300 ml-auto relative"> */}
-        {/* <Image
-          height={320}
+        <Image
+          height={220}
           width={320}
           className="
-            absolute right-0 top-0 lg:-mr-32 md:-mr-16 -mr-3 lg:-mt-20 md:-mt-16
-            ml-auto md:w-[40vw] md:h-[40vw] w-0 h-0 z-10
+            absolute right-0 top-0 lg:-mr-0lg:mt-0 md:-mt-20 object-cover rounded-3xl
+            ml-auto md:w-[40vw] md:h-[40vw] md:z-10 w-0 h-0 z-10
             "
-          src="/assets/images/hero-image.png"
+          src="/assets/images/study-peer.png"
           alt=""
-        /> */}
+        />
       </div>
     </>
   );

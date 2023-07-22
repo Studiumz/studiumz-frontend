@@ -10,10 +10,14 @@ import { useAuthContext } from "@/components";
 import { LoginGuardModal } from "../AuthModule/module-elements/LoginGuardModal";
 import { getAuth } from "@firebase/auth";
 import firebase_app from "@/components/config/firebase";
+import { CardModule } from "../CardModule";
+import axios from "axios";
+import { cfg } from "@/components/config";
+import nookies from "nookies";
 
 export const FindModule: React.FC = () => {
   const router = useRouter();
-  const { user, userId, loading } = useAuthContext();
+  const { user, userId, loading, accessToken } = useAuthContext();
   const [changeMatch, setChangeMatch] = useState<boolean>(false);
   const [acceptMatch, setAcceptMatch] = useState<boolean>(false);
   const [isInvitationModalOpen, setIsInvitationModalOpen] =
@@ -25,6 +29,8 @@ export const FindModule: React.FC = () => {
   useEffect(() => {
     if (!loading && !user) {
       setIsLoginGuardModal(true);
+    } else {
+      // getIncomingMatches()
     }
   }, [user, loading]);
 
@@ -65,7 +71,7 @@ export const FindModule: React.FC = () => {
             changeMatch
               ? "[transform:rotateY(180deg)]"
               : "[transform:rotateY(0deg)]"
-          } transition-all  transform-none duration-500 [transform-style:preserve-3d] h-[75vh] mt-12 w-[400px] rounded-lg bg-[url('https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80')] bg-cover bg-center bg-no-repeat`}
+          } transition-all  transform-none duration-500 [transform-style:preserve-3d] lg:h-[75vh] mt-12 lg:w-[400px] h-screen rounded-lg bg-[url('https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80')] bg-cover bg-center bg-no-repeat`}
         >
           {" "}
           <div className="bg-gradient-to-t from-violet w-full h-full rounded-lg">
@@ -85,7 +91,7 @@ export const FindModule: React.FC = () => {
               </div>
               <div>
                 <h1 className="font-semibold">Struggles</h1>
-                <p className="text-label-medium h-32 overflow-y-scroll mr-2 pr-2">
+                <p className="text-sm h-28 overflow-y-scroll mr-2 pr-2 mt-2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eu
                   turpis congue metus porta ullamcorper. Nunc pretium vestibulum
                   dolor, non tincidunt diam feugiat vel. Mauris scelerisque
@@ -96,7 +102,24 @@ export const FindModule: React.FC = () => {
                 </p>
               </div>
               <div>
-                <h1 className="font-semibold">Interest In</h1>
+                <h1 className="font-semibold mt-2">Interest In</h1>
+                <div className="w-full grid grid-cols-3 gap-2 mt-2">
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Physics
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Math
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Chemistry
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Biology
+                  </div>
+                  <div className="px-5 bg-white text-violet rounded-full items-center justify-center flex text-md">
+                    Statistic
+                  </div>
+                </div>
               </div>
               <div></div>
             </div>

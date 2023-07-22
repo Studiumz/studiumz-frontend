@@ -23,29 +23,28 @@ export const NavBar: React.FC = () => {
       >
         <Navbar.Brand href="/">
           <StudiumzLogo size={"w-8"} />
-          <h1 className="self-center whitespace-nowrap ml-3 text-violet font-semibold lg:text-headline-medium md:text-headline-medium text-title-large">
+          <h1 className="self-center whitespace-nowrap ml-3 text-violet font-semibold lg:text-headline-medium md:text-headline-medium text-title-medium">
             studiumz
           </h1>
         </Navbar.Brand>
         <div className="flex md:order-2 sm:space-x-3">
           {user ? (
             <>
-              <Avatar
-                img={user.photoURL ? user.photoURL : ""}
-                rounded={true}
-                bordered={false}
-                className="w-0 h-0 sm:w-fit sm:h-fit"
-              />
               <Dropdown
-                className="text-xs sm:text-sm font-bold"
-                label={<div>{user.displayName}</div>}
-                outline
-                color={"light"}
-                // size={"small"}
+                inline
+                label={
+                  <Avatar
+                    alt="User settings"
+                    img={user.photoURL ? user.photoURL : ""}
+                    rounded
+                  />
+                }
               >
-                <Link
+                <Dropdown.Header>
+                  <span className="block text-sm">{user.displayName}</span>
+                </Dropdown.Header>
+                <Navbar.Link
                   href="/"
-                  className=" text-red-500"
                   onClick={async () => {
                     await getAuth(firebase_app)
                       .signOut()
@@ -58,7 +57,7 @@ export const NavBar: React.FC = () => {
                   }}
                 >
                   <Dropdown.Item>Sign out</Dropdown.Item>
-                </Link>
+                </Navbar.Link>
               </Dropdown>
             </>
           ) : (

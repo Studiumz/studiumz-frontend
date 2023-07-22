@@ -8,6 +8,7 @@ export interface AuthContextProviderProps {
 export interface AuthContextInterface {
   user: UserInfo | null;
   userId: string | null;
+  accessToken: string | null;
   loading: boolean;
   setLoading: React.Dispatch<any>;
 }

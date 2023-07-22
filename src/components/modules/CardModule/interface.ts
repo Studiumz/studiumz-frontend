@@ -4,5 +4,5 @@ export interface CardProps {
   value: string;
   className?: string;
   isRequired?: boolean;
-  subject?: undefined;
+  subject: string | undefined;
 }

@@ -30,23 +30,23 @@ export const LoginModule: React.FC = () => {
   };
 
   return (
-    <main
-      className={`flex lg:flex-row flex-col w-full min-h-screen bg-gradient-to-r items-center justify-center`}
+    <div
+      className={`flex lg:flex-row flex-col min-h-screen rounded-lg bg-gradient-to-r from-white via-white to-violet bg-opacity-10 items-center justify-center p-24 text-black`}
     >
-      <div className="w-1/2 flex flex-col justify-center items-center  gap-5">
-        <div>
-          <div className="flex flex-wrap">
-            <StudiumzLogo size={"w-20"} />
-            <h1 className="text-violet text-5xl font-extrabold">Studiumz</h1>
-          </div>
-          <h3 className="text-[#808089] text-2xl ml-4">
-            Empowering Senior High Networks: <br />
-            <p className="font-bold">Study, Connect, Succeed.</p>
-          </h3>
+      <div className="lg:w-1/2 w-full flex flex-col justify-center items-center gap-5">
+        <div className="flex flex-wrap">
+          <StudiumzLogo size={"w-20"} />
+          <h1 className="text-violet text-5xl font-extrabold">Studiumz</h1>
         </div>
+        <h3 className="text-[#808089] text-2xl ml-20">
+          Empowering Senior High Networks: <br />
+          <p className="font-bold">Study, Connect, Succeed.</p>
+        </h3>
       </div>
       <div className="w-1/2 text-center flex flex-col justify-end items-center gap-5">
-        <h3 className="text-violet text-xl">Unlock Your Potential Together.</h3>
+        <h3 className="text-purple-800 text-xl">
+          Unlock Your Potential Together.
+        </h3>
         <a>
           <button
             className="flex justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80"
@@ -80,6 +80,6 @@ export const LoginModule: React.FC = () => {
           </button>
         </a>
       </div>
-    </main>
+    </div>
   );
 };

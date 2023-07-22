@@ -16,7 +16,7 @@ export default AuthenticatedPage;
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const cookies = nookies.get(ctx);
-    const token = await adminSDK.auth().verifyIdToken(cookies.token);
+    const token = await adminSDK.auth().verifyIdToken(cookies.accessToken);
 
     const { uid, email } = token;
 

@@ -19,30 +19,11 @@ export const LoginModule: React.FC = () => {
 
   const handleLogIn = async () => {
     const result = await signInWithPopup(auth, provider)
-      .then(async (result) => {
-        const user = result.user;
-        if (user) {
-          const idToken = await user.getIdToken();
-
-          const options = {
-            headers: {
-              "Content-Type": "application/json",
-              "X-Google-Id-Token": idToken,
-            },
-          };
-
-          axios
-            .post(`${cfg.API}/auth/sign-in/google`, {}, options)
-            .then((response) => {
-              toast.success("Successfully log in.");
-              setTimeout(() => {
-                router.push("/");
-              }, 1000);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
+      .then(() => {
+        toast.success("Successfully Log In.");
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -69,7 +50,7 @@ export const LoginModule: React.FC = () => {
         </h3>
         <a>
           <button
-            className="flex justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80"
+            className="flex bg-white justify-center items-center gap-2 outline outline-offset-2 outline-1 w-48 h-10 rounded-lg decoration-black transform transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-80"
             onClick={handleLogIn}
           >
             <svg

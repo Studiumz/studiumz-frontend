@@ -2,14 +2,17 @@ import React from "react";
 import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
 import { routes } from "./constant";
 import { useRouter } from "next/router";
-// import { useAuthContext } from 'src/components/contexts/AuthContext'
-// import { IAuthContext } from 'src/components/contexts/AuthContext/interface'
-import Link from "next/link";
 import { StudiumzLogo } from "../../icons/StudiumzLogo";
+import { useAuthContext } from "@/components";
+import Link from "next/link";
+import { getAuth } from "@firebase/auth";
+import firebase_app from "@/components/config/firebase";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const NavBar: React.FC = () => {
   const router = useRouter();
-  // const { user }: IAuthContext = useAuthContext()
+  const { user } = useAuthContext();
 
   return (
     <>
@@ -24,29 +27,34 @@ export const NavBar: React.FC = () => {
           </h1>
         </Navbar.Brand>
         <div className="flex md:order-2 sm:space-x-3">
-          {/* {user ? (
+          {user ? (
             <>
               <Avatar
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                img={user.photoURL ? user.photoURL : ""}
                 rounded={true}
                 bordered={false}
-                className='w-0 h-0 sm:w-fit sm:h-fit'
+                className="w-0 h-0 sm:w-fit sm:h-fit"
               />
               <Dropdown
                 className="text-xs sm:text-sm font-bold"
-                label={<div>{user.name}</div>}
+                label={<div>{user.displayName}</div>}
                 outline
-                color={'light'}
+                color={"light"}
                 // size={"small"}
               >
                 <Dropdown.Item>
-                  <Link href="/profile">Profile</Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link href="/cart">Cart</Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link href="/auth/logout" className=" text-red-500">
+                  <Link
+                    href="/auth/logout"
+                    className=" text-red-500"
+                    onClick={async () => {
+                      await getAuth(firebase_app)
+                        .signOut()
+                        .then(() => {
+                          router.push("/");
+                          toast.success("Successfully Sign Out.");
+                        });
+                    }}
+                  >
                     Sign out
                   </Link>
                 </Dropdown.Item>
@@ -55,11 +63,11 @@ export const NavBar: React.FC = () => {
           ) : (
             <Button
               className="bg-indigo-500"
-              onClick={(e) => router.push('/auth/login')}
+              onClick={() => router.push("/auth/login")}
             >
               Login
             </Button>
-          )} */}
+          )}
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>

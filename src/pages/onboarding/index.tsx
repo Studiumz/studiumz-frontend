@@ -1,14 +1,17 @@
 import CustomModal from "@/components/elements/modal";
 import { StudiumzLogo } from "@/components/icons/StudiumzLogo";
+import { CardModule } from "@/components/modules/CardModule";
 import { Label, TextInput, Button } from "flowbite-react";
+import { GenderContents, subjectContents } from "./constant";
+import { Key } from "react";
 
 export default function Onboarding() {
   return (
     <>
-      <CustomModal />
+      {/* <CustomModal /> */}
 
-      <form className="flex flex-col p-5 justify-center items-center z-0">
-        <StudiumzLogo size={"w-20"} className="my-10" />
+      <form className="flex flex-col p-5 py-28 justify-center items-center z-0">
+        {/* <StudiumzLogo size={"w-20"} className="my-10" /> */}
 
         <div className="flex lg:flex-row flex-col gap-16">
           <div className="w-1/2">
@@ -43,52 +46,21 @@ export default function Onboarding() {
                 Gender
               </label>
               <ul className="flex flex-wrap gap-2 w-full">
-                <li>
-                  <input
-                    type="radio"
-                    id="male"
-                    name="hosting"
-                    value="male"
-                    className="hidden peer"
-                    required
-                  />
-                  <label
-                    htmlFor="male"
-                    className="inline-flex items-center justify-center w-32 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-violet peer-checked:text-violet hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div className="block">Male</div>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    id="female"
-                    name="hosting"
-                    value="female"
-                    className="hidden peer"
-                  />
-                  <label
-                    htmlFor="female"
-                    className="inline-flex items-center justify-center w-32 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-violet peer-checked:text-violet hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div className="block">Female</div>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    id="others"
-                    name="hosting"
-                    value="others"
-                    className="hidden peer"
-                  />
-                  <label
-                    htmlFor="others"
-                    className="inline-flex items-center justify-center w-32 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-violet peer-checked:text-violet hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div className="block">Others</div>
-                  </label>
-                </li>
+                {GenderContents.map((content) => {
+                  return (
+                    <ul key={content.id}>
+                      <li key={content.id}>
+                        <CardModule
+                          type={content.type}
+                          id={content.id}
+                          value={content.value}
+                          isRequired={content.isRequired}
+                          subject={content.subject}
+                        />
+                      </li>
+                    </ul>
+                  );
+                })}
               </ul>
             </div>
 
@@ -131,54 +103,31 @@ export default function Onboarding() {
                 Choose your interests
               </label>
               <ul className="flex gap-3">
-                <li>
-                  <input
-                    type="radio"
-                    id="biologi"
-                    name="hosting"
-                    value="biologi"
-                    className="hidden peer"
-                    required
-                  />
-                  <label
-                    htmlFor="biologi"
-                    className="inline-flex items-center justify-center w-32 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-violet peer-checked:text-violet hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div className="block">Biologi</div>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    id="kimia"
-                    name="hosting"
-                    value="kimia"
-                    className="hidden peer"
-                    required
-                  />
-                  <label
-                    htmlFor="kimia"
-                    className="inline-flex items-center justify-center w-32 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-violet peer-checked:text-violet hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div className="block">Kimia</div>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    id="fisika"
-                    name="hosting"
-                    value="fisika"
-                    className="hidden peer"
-                    required
-                  />
-                  <label
-                    htmlFor="fisika"
-                    className="inline-flex items-center justify-center w-32 py-1 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-violet peer-checked:text-violet hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                  >
-                    <div className="block">Fisika</div>
-                  </label>
-                </li>
+                {subjectContents.map(
+                  (content: {
+                    id: string;
+                    type: string;
+                    value: string;
+                    isRequired: boolean | undefined;
+                    subject: string | undefined;
+                  }) => {
+                    return (
+                      <>
+                        <ul key={content.id}>
+                          <li>
+                            <CardModule
+                              type={content.type}
+                              id={content.id}
+                              value={content.value}
+                              isRequired={content.isRequired}
+                              subject={content.subject}
+                            />
+                          </li>
+                        </ul>
+                      </>
+                    );
+                  }
+                )}
               </ul>
             </div>
           </div>

@@ -9,10 +9,49 @@ import nookies from "nookies";
 import { InvitationMessagesProps } from "./interface";
 import { RespondeeBubble } from "./module-elements/RespondeeBubble";
 import { ResponderBubble } from "./module-elements/ResponderBubble";
+import axios from "axios";
+import { DetailChat, FriendsInfo, ListOfChats } from "./interface";
 
 export default function ChatModule() {
   const { user, userId, loading } = useAuthContext();
   const [isLoginGuardModal, setIsLoginGuardModal] = useState<boolean>(false);
+  const [chats, setChats] = useState<ListOfChats[]>();
+  const [chatId, setChatId] = useState<string | undefined>();
+  const [friendChats, setFriendChats] = useState<FriendsInfo[]>();
+  const [sendMessageTo, setSendMessageTo] = useState("");
+  const [detailChats, setDetailChats] = useState<DetailChat>();
+  const [friendsName, setFriendsName] = useState("");
+  const [friendsEmail, setFriendsEmail] = useState("");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2Rldi5hcGkuc3R1ZGl1bXoudmVpdmVscC5jb20iLCJzdWIiOiIwMUg1WUhTSFFFWThKN01aWDdBOVA1VjBWUiIsImF1ZCI6WyJodHRwczovL2Rldi5hcGkuc3R1ZGl1bXoudmVpdmVscC5jb20iXSwiZXhwIjoxNjkwNjU3NTMyLCJpYXQiOjE2OTAwNTI3MzIsImp0aSI6IjAxSDVaRlc5QjRNTjE2UTgxVjdNNjZKNThCIiwic2NvcGVzIjoiUk9MRV9VU0VSIn0.CZq5ucIPH3DqnAuhAjrAcUT5eAwNEKrGLI8J8c6SGQQ`,
+    },
+  };
+
+  const getDetailUserChats = async (id: string) => {};
+
+  const [data, setData] = useState("");
+
+  const handleInputChange = (e: any) => {
+    setData(e.target.value);
+  };
+
+  const handleCreateMessage = async () => {
+    await axios
+      .post(
+        `https://dev.api.studiumz.veivelp.com/chat/${sendMessageTo}/create`,
+        {
+          text: data,
+        },
+        config
+      )
+      .then((response) => {
+        console.log("createMessage");
+        setSendMessageTo(sendMessageTo);
+        console.log(response.data);
+      });
+  };
   const [invitationMessages, setInvitationMessages] = useState<
     InvitationMessagesProps[]
   >([]);
@@ -33,6 +72,17 @@ export default function ChatModule() {
     useState<boolean>(false);
 
   useEffect(() => {
+    axios
+      .get("https://dev.api.studiumz.veivelp.com/chat", config)
+      .then((response) => {
+        setFriendChats(response.data);
+
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     if (!loading && !user) {
       setIsLoginGuardModal(true);
     } else {
@@ -40,6 +90,20 @@ export default function ChatModule() {
       getOutgoingMatch();
     }
   }, [user, loading]);
+
+  useEffect(() => {
+    axios
+      .get(`https://dev.api.studiumz.veivelp.com/chat/${sendMessageTo}`, config)
+      .then((response) => {
+        console.log("detailllll");
+        setDetailChats(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [sendMessageTo]);
+
 
   const getIncomingMatch = () => {
     if (!nookies.get().accessToken) {
@@ -147,52 +211,35 @@ export default function ChatModule() {
               </h5>
             </div>
             <div className="flow-root">
-              {invitationMessages.length === 0 ? (
-                <h1>There is no invitation</h1>
-              ) : (
-                <div className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-40">
-                  {invitationMessages.map((message) => (
-                    <li className="py-3 sm:py-4" key={message.id}>
-                      <div className="flex items-center space-x-4">
-                        <div className="shrink-0">
-                          <div>{/* Content for the avatar */}</div>
-                        </div>
-                        <div
-                          className="min-w-0 flex-1 cursor-pointer"
-                          onClick={() => handleInvitationChatClick(message)}
-                        >
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                            {message.matchee_id}
-                          </p>
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                            {message.invitation_message}
-                          </p>
-                        </div>
-                        <div className="flex flex-row gap-x-2">
-                          <div
-                            className="p-1 bg-red-500 text-white font-semibold text-sm rounded-md justify-center flex items-center"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleReject(message.id);
-                            }}
-                          >
-                            Reject
-                          </div>
-                          <div
-                            className="p-1 bg-white text-green-500 border-2 border-green-500 font-semibold text-sm rounded-md justify-center flex items-center"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleAccept(message.id);
-                            }}
-                          >
-                            Accept
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </div>
-              )}
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-40">
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="shrink-0">
+                      {/* <No
+                        Display
+                        Name
+                        alt="Neil image"
+                        className="rounded-full"
+                        height="32"
+                        src="/images/people/profile-picture-1.jpg"
+                        width="32"
+                      /> */}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      {friendChats?.map((friend) => {
+                        return (
+                          <>
+                            <div key={friend.id}>
+                              <p>{friend.recipient_name}</p>
+                              <p>{friend.recipient_email}</p>
+                            </div>
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </Card>
           <Card>
@@ -202,95 +249,33 @@ export default function ChatModule() {
               </h5>
             </div>
             <div className="flow-root">
-              {outgoingMessages.length === 0 &&
-              invitationMessages.length === 0 ? (
-                <h1>There is no messages</h1>
-              ) : (
-                <div className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-40">
-                  {invitationMessages
-                    .filter((message) => message.match_status === "ACCEPTED")
-                    .map((message) => (
-                      <li className="py-3 sm:py-4" key={message.id}>
-                        <div className="flex items-center space-x-4">
-                          <div className="shrink-0">
-                            <div>{/* Content for the avatar */}</div>
-                          </div>
-                          <div
-                            className="min-w-0 flex-1 cursor-pointer"
-                            onClick={() => handleInvitationChatClick(message)}
-                          >
-                            <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                              {message.matchee_id}
-                            </p>
-                            <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                              {message.invitation_message}
-                            </p>
-                          </div>
-                          <div className="flex flex-row gap-x-2">
-                            <div
-                              className="p-1 bg-red-500 text-white font-semibold text-sm rounded-md justify-center flex items-center"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleReject(message.id);
-                              }}
-                            >
-                              Reject
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700 overflow-y-auto h-72">
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="shrink-0"></div>
+                    <div className="min-w-0 flex-1">
+                      {friendChats?.map((friend) => {
+                        return (
+                          <>
+                            <div key={friend.id}>
+                              <button
+                                onClick={() => {
+                                  setSendMessageTo(friend.id);
+                                  setFriendsName(friend.recipient_name);
+                                  setFriendsEmail(friend.recipient_email);
+                                }}
+                              >
+                                {friend.recipient_name}
+                              </button>
+                              <p>{friend.recipient_email}</p>
                             </div>
-                            <div
-                              className="p-1 bg-white text-green-500 border-2 border-green-500 font-semibold text-sm rounded-md justify-center flex items-center"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleAccept(message.id);
-                              }}
-                            >
-                              Accept
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  {outgoingMessages.map((message) => (
-                    <li className="py-3 sm:py-4" key={message.id}>
-                      <div className="flex items-center space-x-4">
-                        <div className="shrink-0">
-                          <div>{/* Content for the avatar */}</div>
-                        </div>
-                        <div
-                          className="min-w-0 flex-1 cursor-pointer"
-                          onClick={() => handleInvitationChatClick(message)}
-                        >
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                            {message.matchee_id}
-                          </p>
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                            {message.invitation_message}
-                          </p>
-                        </div>
-                        <div className="flex flex-row gap-x-2">
-                          <div
-                            className="p-1 bg-red-500 text-white font-semibold text-sm rounded-md justify-center flex items-center"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleReject(message.id);
-                            }}
-                          >
-                            Reject
-                          </div>
-                          <div
-                            className="p-1 bg-white text-green-500 border-2 border-green-500 font-semibold text-sm rounded-md justify-center flex items-center"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleAccept(message.id);
-                            }}
-                          >
-                            Accept
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </div>
-              )}
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </Card>
         </div>
@@ -302,12 +287,9 @@ export default function ChatModule() {
               <div className="relative flex items-center space-x-4">
                 <div className="flex flex-col leading-tight">
                   <div className="text-2xl mt-1 flex items-center">
-                    <span className="text-gray-700 mr-3">
-                      {openInvitationMessage
-                        ? invitationMessageContent.matchee_id
-                        : ""}
-                    </span>
+                    <span className="text-gray-700 mr-3">{friendsName}</span>
                   </div>
+                  <span className="text-lg text-gray-600">{friendsEmail}</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2 mb-2">
@@ -370,19 +352,46 @@ export default function ChatModule() {
                 </button>
               </div>
             </div>
+
             <div
               id="messages"
               className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
             >
-              {openInvitationMessage &&
-              invitationMessageContent.invitation_message !== undefined ? (
-                <RespondeeBubble
-                  message={invitationMessageContent.invitation_message}
-                />
-              ) : (
-                ""
-              )}{" "}
+              {detailChats &&
+                detailChats.messages &&
+                [...detailChats?.messages].reverse().map((message) => {
+                  return (
+                    <>
+                      {message.from_user_id === userId ? (
+                        <div className="chat-message">
+                          <div className="flex items-end justify-end">
+                            <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
+                              <div>
+                                <span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-violet text-white ">
+                                  {message.text}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="chat-message">
+                          <div className="flex items-end">
+                            <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
+                              <div>
+                                <span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-300 text-gray-600">
+                                  {message.text}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
             </div>
+
             <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
               <div className="relative flex">
                 <span className="absolute inset-y-0 flex items-center">
@@ -407,6 +416,8 @@ export default function ChatModule() {
                   </button>
                 </span>
                 <input
+                  value={data}
+                  onChange={handleInputChange}
                   type="text"
                   placeholder="Write your message!"
                   className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
@@ -476,6 +487,7 @@ export default function ChatModule() {
                     </svg>
                   </button>
                   <button
+                    onClick={handleCreateMessage}
                     type="button"
                     className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-purple-800 hover:bg-purple-400 focus:outline-none"
                   >

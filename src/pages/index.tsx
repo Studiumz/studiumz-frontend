@@ -106,10 +106,10 @@ export default function Home() {
           height={220}
           width={320}
           className="
-            absolute right-0 top-0 lg:-mr-0lg:mt-0 md:-mt-20 object-cover rounded-3xl
+            absolute right-12 top-12 lg:-mr-0lg:mt-0 md:-mt-20 object-cover rounded-3xl
             ml-auto md:w-[40vw] md:h-[40vw] md:z-10 w-0 h-0 z-10
             "
-          src="/assets/images/study-peer.png"
+          src="/assets/images/study-peer.jpg"
           alt=""
         />
       </div>

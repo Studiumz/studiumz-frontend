@@ -13,7 +13,7 @@ const AuthContext = createContext({} as AuthContextInterface);
 export const useAuthContext = () => useContext(AuthContext);
 
 export function AuthContextProvider({ children }: any) {
-  const router = useRouter()
+  const router = useRouter();
 
   const [user, setUser] = useState<UserInfo | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -22,17 +22,18 @@ export function AuthContextProvider({ children }: any) {
   const [userInfo, setUserInfo] = useState<CustomUser>();
 
   function fetchUserInfo(at: string) {
-    axios.get(`${cfg.API}/auth/userinfo`, {
-      headers: {
-        Authorization: `Bearer ${at}`
-      }
-    })
-    .then(res => {
-      setUserInfo(res.data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    axios
+      .get(`${cfg.API}/auth/userinfo`, {
+        headers: {
+          Authorization: `Bearer ${at}`,
+        },
+      })
+      .then((res) => {
+        setUserInfo(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   useEffect(() => {
@@ -95,7 +96,15 @@ export function AuthContextProvider({ children }: any) {
 
   return (
     <AuthContext.Provider
-      value={{ user, userId, accessToken, loading, setLoading, userInfo, setUserInfo }}
+      value={{
+        user,
+        userId,
+        accessToken,
+        loading,
+        setLoading,
+        userInfo,
+        setUserInfo,
+      }}
     >
       {children}
     </AuthContext.Provider>

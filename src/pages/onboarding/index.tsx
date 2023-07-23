@@ -2,7 +2,14 @@ import CustomModal from "@/components/elements/modal";
 import { StudiumzLogo } from "@/components/icons/StudiumzLogo";
 import { CardModule } from "@/components/modules/CardModule";
 import { Label, TextInput, Button, Radio } from "flowbite-react";
-import { BaseSyntheticEvent, FormEventHandler, Key, SyntheticEvent, useEffect, useState } from "react";
+import {
+  BaseSyntheticEvent,
+  FormEventHandler,
+  Key,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import GenderContents from "../../components/utils/GenderConstant";
 import subjectContents from "../../components/utils/subjectConstant";
 import { useAuthContext } from "@/components";
@@ -13,35 +20,39 @@ import { cfg } from "@/components/config";
 import { Subject } from "./interface";
 
 export default function Onboarding() {
-  const { userInfo, accessToken, loading: isAuthLoading } = useAuthContext()
+  const { userInfo, accessToken, loading: isAuthLoading } = useAuthContext();
   const [form, setForm] = useState<any>({
-    subject_names: []
+    subject_names: [],
   });
-  const [subjects, setSubjects] = useState<Subject[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function fetchAllSubjects() {
-    axios.get(`${cfg.API}/subject/`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
-    .then(res => {
-      setSubjects(res.data.data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    axios
+      .get(`${cfg.API}/subject/`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        setSubjects(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function onFormChange(e: BaseSyntheticEvent) {
-    console.log(e.target)
-    setForm((prev:any) => ({ ...prev, [e.target.id]: e.target.value }))
+    console.log(e.target);
+    setForm((prev: any) => ({ ...prev, [e.target.id]: e.target.value }));
   }
 
   function handleSubjectContents(subject: string) {
-    const arr: any[] = form.subject_names || []
-    setForm((prev: any) => ({...prev, subject_names: [...prev.subject_names, subject]}))
+    const arr: any[] = form.subject_names || [];
+    setForm((prev: any) => ({
+      ...prev,
+      subject_names: [...prev.subject_names, subject],
+    }));
     // if (arr?.includes(subject)) {
     //   const index = arr.indexOf(subject);
     //   if (index > -1) {
@@ -55,37 +66,42 @@ export default function Onboarding() {
   }
 
   function onFormSubmit() {
-    setIsLoading(true)
+    setIsLoading(true);
     axios
       .post(`${cfg.API}/auth/onboarding`, form, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
       .then((res) => {
-        toast.success("Onboarding complete! You can now proceed.")
+        toast.success("Onboarding complete! You can now proceed.");
 
         setTimeout(() => {
-          router.push('/find')
-        }, 2000)
+          router.push("/find");
+        }, 2000);
       })
       .catch((err) => {
-        toast.error("Error onboarding user.")
+        toast.error("Error onboarding user.");
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
     if (!isAuthLoading && accessToken) {
-      fetchAllSubjects()
-    } 
-  }, [accessToken, isAuthLoading])
+      fetchAllSubjects();
+    }
+  }, [accessToken, isAuthLoading]);
 
   return (
     <>
       {/* <CustomModal /> */}
 
-      <form className="flex flex-col p-5 py-28 justify-center items-center z-0" onSubmit={() => { onFormSubmit() }}>
+      <form
+        className="flex flex-col p-5 py-28 justify-center items-center z-0"
+        onSubmit={() => {
+          onFormSubmit();
+        }}
+      >
         {/* <StudiumzLogo size={"w-20"} className="my-10" /> */}
 
         <div className="flex lg:flex-row flex-col gap-16">
@@ -103,7 +119,7 @@ export default function Onboarding() {
             </div>
             <div className="mb-6">
               <div className="mb-2 block">
-                <Label htmlFor="full_name" value="Full Name"/>
+                <Label htmlFor="full_name" value="Full Name" />
               </div>
               <TextInput
                 id="full_name"
@@ -137,7 +153,15 @@ export default function Onboarding() {
                 {GenderContents.map((content, idx) => {
                   return (
                     <ul key={content.id}>
-                      <li key={content.id} onClick={() => { setForm((prev: any) => ({...prev, ["gender"]: idx })) }}>
+                      <li
+                        key={content.id}
+                        onClick={() => {
+                          setForm((prev: any) => ({
+                            ...prev,
+                            ["gender"]: idx,
+                          }));
+                        }}
+                      >
                         <CardModule
                           type={content.type}
                           id={content.id}
@@ -166,7 +190,7 @@ export default function Onboarding() {
                     type="date"
                     value={form.date_of_birth}
                     onChange={onFormChange}
-                    defaultValue={'2001-01-01'}
+                    defaultValue={"2001-01-01"}
                   />
                 </li>
               </ul>
@@ -177,11 +201,7 @@ export default function Onboarding() {
             <div className="mb-2 block">
               <Label htmlFor="struggles" value="Share your struggle stories" />
             </div>
-            <TextInput
-              id="struggles"
-              sizing="lg"
-              type="text"
-            />
+            <TextInput id="struggles" sizing="lg" type="text" />
 
             <div className="my-10">
               <label
@@ -192,28 +212,31 @@ export default function Onboarding() {
               </label>
               <ul className="flex flex-wrap gap-3">
                 {subjects.map((subject, idx) => {
-                    return (
-                      <>
-                        <ul key={idx}>
-                          <li onClick={() => handleSubjectContents(subject.name)}>
-                            <CardModule
-                              type={"checkbox"}
-                              id={subject.name}
-                              value={subject.name}
-                              subject={subject.name}
-                            />
-                          </li>
-                        </ul>
-                      </>
-                    );
-                  })
-                }
+                  return (
+                    <>
+                      <ul key={idx}>
+                        <li onClick={() => handleSubjectContents(subject.name)}>
+                          <CardModule
+                            type={"checkbox"}
+                            id={subject.name}
+                            value={subject.name}
+                            subject={subject.name}
+                          />
+                        </li>
+                      </ul>
+                    </>
+                  );
+                })}
               </ul>
             </div>
           </div>
         </div>
 
-        <Button type="button" className="cursor-pointer bg-violet px-3 my-5" onClick={onFormSubmit}>
+        <Button
+          type="button"
+          className="cursor-pointer bg-violet px-3 my-5"
+          onClick={onFormSubmit}
+        >
           Submit
         </Button>
       </form>

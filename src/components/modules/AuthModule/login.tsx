@@ -24,7 +24,7 @@ export const LoginModule: React.FC = () => {
       .then(() => {
         toast.success("Successfully Log In.");
         if (userInfo && userInfo.status === 0) {
-          router.push("/onboarding")
+          router.push("/onboarding");
         } else {
           setTimeout(() => {
             router.push("/");
